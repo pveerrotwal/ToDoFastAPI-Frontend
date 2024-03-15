@@ -16,7 +16,7 @@ pipeline {
         stage('Deploy Frontend') {
             steps {
                 // Deploy frontend Docker containers using docker-compose-frontend.yml
-                sh 'docker-compose -f docker-compose-frontend.yml up'
+                sh 'docker-compose -f docker-compose-frontend.yml up -d'
             }
         }
         stage('Horusec Security Scan') {
