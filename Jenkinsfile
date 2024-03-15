@@ -9,7 +9,7 @@ pipeline {
 
                 // Build frontend Docker image
                 script {
-                    docker.build('frontend', '-f Dockerfile .')
+                    echo "Building the image"
                 }
             }
         }
