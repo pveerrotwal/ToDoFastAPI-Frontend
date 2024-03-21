@@ -2,28 +2,38 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Frontend') {
+        stage('Build Backend') {
             steps {
-                // Checkout frontend repository
-                git branch: 'main', url: 'https://github.com/pveerrotwal/ToDoFastAPI-Frontend.git'
+                // Checkout backend repository
+                git branch: 'main', url: 'https://github.com/pveerrotwal/ToDoFastAPI-Backend.git'
 
-                // Build frontend Docker image
+                // Build backend Docker image
                 script {
-                    echo "Building the image"
+                    echo "Building Backend"
                 }
             }
         }
-        stage('Deploy Frontend') {
+
+        stage('Deploy Backend') {
             steps {
-                // Deploy frontend Docker containers using docker-compose-frontend.yml
+                // Deploy backend Docker containers using docker-compose-backend.yml
                 sh 'docker-compose -f docker-compose-frontend.yml up -d'
             }
         }
-        stage('Horusec Scan') {
+
+        stage('SonarQube Analysis') {
             steps {
-                // Install Horusec and run the security scan
-                sh 'curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest'
-                sh 'horusec start -p="./" -a 5446311c-5829-4e6b-924b-977250c36ec7 --disable-docker="true"'
+                // Execute SonarQube Scanner
+                script {
+                    // Get the path to SonarQube Scanner installation directory
+                    def scannerHome = tool 'SonarQubeScanner';
+                    echo "SonarQube Scanner installation directory: ${scannerHome}"
+                    
+                    // Run SonarQube Scanner
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
             }
         }
     }
