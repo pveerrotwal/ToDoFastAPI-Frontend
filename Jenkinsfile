@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Backend') {
+        stage('Build Frontend') {
             steps {
                 // Checkout backend repository
-                git branch: 'main', url: 'https://github.com/pveerrotwal/ToDoFastAPI-Backend.git'
+                git branch: 'main', url: 'https://github.com/pveerrotwal/ToDoFastAPI-Frontend.git'
 
                 // Build backend Docker image
                 script {
-                    echo "Building Backend"
+                    echo "Building Frontend"
                 }
             }
         }
